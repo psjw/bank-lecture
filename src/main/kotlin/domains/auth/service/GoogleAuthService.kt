@@ -1,5 +1,7 @@
 package com.psjw.basic.domains.auth.service
 
+import com.psjw.basic.common.exception.CustomException
+import com.psjw.basic.common.exception.ErrorCode
 import com.psjw.basic.config.OAuth2Config
 import com.psjw.basic.interfaces.OAuth2TokenResponse
 import com.psjw.basic.interfaces.OAuth2UserResponse
@@ -13,7 +15,7 @@ private const val key = "google"
 class GoogleAuthService(
     private val config: OAuth2Config
 ) : OAuthServiceInterface {
-    private val oAuthInfo = config.providers[key]
+    private val oAuthInfo = config.providers[key] ?: throw CustomException(ErrorCode.AUTH_CONFIG_NOT_FOUND, key)
     override val providerName : String  = key
 
     override fun getToken(code: String): OAuth2TokenResponse {
